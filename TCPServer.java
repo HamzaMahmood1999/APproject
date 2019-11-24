@@ -2,13 +2,19 @@ package server;
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class TCPServer {
 	public static final int SERVER_PORT = 6789;
 	public static int serverPort;
+	
+	public static Vector<ServerThread> connectedClients=new Vector<ServerThread>();
+	
+	public static Vector<ServerThread> getConnectedClients() {
+		return connectedClients;
+	}
+	
 	public static void main(String argv[]) throws Exception {
-		String clientSentence;
-		String capitalizedSentence;
 		//ServerSocket welcomeSocket = new ServerSocket(SERVER_PORT);
 		//System.out.println("Server is listing at port  "+SERVER_PORT);
 		
@@ -22,8 +28,10 @@ public class TCPServer {
 		while(true) { // Listen forever
 			try {
 				Socket connectSocket = welcomeSocket.accept();
+				ServerThread connectedClient=new ServerThread(connectSocket);
 				System.out.println("Connection accepted");
-				Thread th1=new ServerThread(connectSocket);
+				Thread th1=new Thread(connectedClient);
+				connectedClients.add(connectedClient);
 				th1.start();
 			}
 			catch (Exception e) {
