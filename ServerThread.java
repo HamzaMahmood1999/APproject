@@ -1,12 +1,18 @@
 package server;
 import java.io.*;
 import java.net.*;
+import java.util.*;
+import server.*;
 
-public class ServerThread extends Thread {
+public class ServerThread implements Runnable {
 	private Socket client;
 	
 	public ServerThread(Socket sentClient) {
 		this.client=sentClient;
+	}
+	
+	public Socket getServerThreadClient() {
+		return this.client;
 	}
 	
 	public void run() {
@@ -20,7 +26,19 @@ public class ServerThread extends Thread {
 				BufferedReader serverInput =new BufferedReader(new InputStreamReader(System.in));
 				String s=serverInput.readLine();
 				sendSentence=s;
-				sender.writeUTF(sendSentence);
+				Vector<ServerThread> connectedClients=TCPServer.getConnectedClients();
+				Iterator it=connectedClients.iterator();
+				while (it.hasNext()) {
+					ServerThread vectorSerThread=(ServerThread)it.next();
+					System.out.println(this+"~~~~~"+vectorSerThread);
+					if (!this.equals(vectorSerThread)) {
+						Socket client2=vectorSerThread.getServerThreadClient();
+						DataOutputStream sender2=new DataOutputStream(client2.getOutputStream());
+						sender2.writeUTF(sendSentence);
+					}
+				}
+				
+				
 			}
 		}
 		catch (Exception e) {
