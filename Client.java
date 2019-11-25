@@ -3,7 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-class TCPClient {
+class Client {
 	public static int serverPort;
 	public static void main(String[] args) throws Exception {
 			String hostName = "localhost";
