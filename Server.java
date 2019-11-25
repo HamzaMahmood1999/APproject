@@ -4,7 +4,9 @@ import java.net.*;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class TCPServer {
+import database.DBCreation;
+
+public class Server {
 	public static final int SERVER_PORT = 6789;
 	public static int serverPort;
 	
@@ -15,8 +17,15 @@ public class TCPServer {
 	}
 	
 	public static void main(String argv[]) throws Exception {
-		//ServerSocket welcomeSocket = new ServerSocket(SERVER_PORT);
-		//System.out.println("Server is listing at port  "+SERVER_PORT);
+		DBCreation userdatabase=new DBCreation();
+		userdatabase.createUsersDB();
+		userdatabase.createUsersTable();
+		userdatabase.createUser("abc@1", "password");
+		userdatabase.createUser("no", "sleepy");
+		userdatabase.createUser("thisisrandom", "ok");
+		userdatabase.createUser("abc@123", "password");
+		
+		
 		
 		System.out.println("Enter port number: ");
 		Scanner in=new Scanner(System.in);
