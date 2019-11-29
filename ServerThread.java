@@ -24,17 +24,16 @@ public class ServerThread implements Runnable {
 				clientSentence = receiver.readUTF();
 				System.out.println("CLIENT: "+clientSentence);
 				BufferedReader serverInput =new BufferedReader(new InputStreamReader(System.in));
-				String s=serverInput.readLine();
-				sendSentence=s;
+				//String s=serverInput.readLine();
+				//sendSentence=s;
 				Vector<ServerThread> connectedClients=TCPServer.getConnectedClients();
 				Iterator it=connectedClients.iterator();
 				while (it.hasNext()) {
 					ServerThread vectorSerThread=(ServerThread)it.next();
-					System.out.println(this+"~~~~~"+vectorSerThread);
 					if (!this.equals(vectorSerThread)) {
 						Socket client2=vectorSerThread.getServerThreadClient();
 						DataOutputStream sender2=new DataOutputStream(client2.getOutputStream());
-						sender2.writeUTF(sendSentence);
+						sender2.writeUTF(clientSentence);
 					}
 				}
 				
