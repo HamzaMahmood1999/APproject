@@ -4,14 +4,14 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.*;
+import java.net.Socket;
 
-public class ClientThread implements Runnable {
+public class WriteThread implements Runnable {
 	private Socket client;
 	
-	public ClientThread() {}
+	public WriteThread() {}
 	
-	public ClientThread(Socket sentClient) {
+	public WriteThread(Socket sentClient) {
 		this.client=sentClient;
 	}
 	
