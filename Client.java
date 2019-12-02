@@ -2,6 +2,7 @@ package client;
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
+import classes.*;
 
 class Client {
 	public static int serverPort;
@@ -19,15 +20,13 @@ class Client {
 			Socket clientSocket=new Socket(hostName, serverPort);
 			System.out.println("Server is listening at port = "+serverPort);
 			System.out.println(clientSocket);
-			while (true) {
-				DataOutputStream sender=new DataOutputStream(clientSocket.getOutputStream());
-				DataInputStream receiver=new DataInputStream(clientSocket.getInputStream());
-				sentence = inFromUser.readLine();
-				sender.writeUTF(sentence);
-				System.out.println("CLIENT: "+sentence);
-				modifiedSentence = receiver.readUTF();
-				System.out.println("FROM SERVER: " +modifiedSentence);
-				//clientSocket.close();
-			}
+			//while (true) {
+			WriteThread writethread=new WriteThread(clientSocket);
+			Thread th1=new Thread(writethread);
+			th1.start();
+				
+			ReadThread readthread=new ReadThread(clientSocket);
+			Thread th2=new Thread(readthread);
+			th2.start();
 		}
 }
