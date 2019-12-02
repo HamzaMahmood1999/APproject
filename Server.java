@@ -4,6 +4,7 @@ import java.net.*;
 import java.util.Scanner;
 import java.util.Vector;
 
+import classes.ChatRoom;
 import database.DBCreation;
 
 public class Server {
@@ -11,6 +12,8 @@ public class Server {
 	public static int serverPort;
 	
 	public static Vector<ServerThread> connectedClients=new Vector<ServerThread>();
+	
+	public static Vector<ChatRoom> chatrooms=new Vector<ChatRoom>();
 	
 	public static Vector<ServerThread> getConnectedClients() {
 		return connectedClients;
@@ -26,7 +29,6 @@ public class Server {
 		userdatabase.createUser("abc@123", "password");
 		
 		
-		
 		System.out.println("Enter port number: ");
 		Scanner in=new Scanner(System.in);
 		String s=in.nextLine();
@@ -39,18 +41,14 @@ public class Server {
 				Socket connectSocket = welcomeSocket.accept();
 				ServerThread connectedClient=new ServerThread(connectSocket);
 				System.out.println("Connection accepted");
-				Thread th1=new Thread(connectedClient);
 				connectedClients.add(connectedClient);
+				Thread th1=new Thread(connectedClient);
+				
 				th1.start();
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			//DataInputStream receiver =new DataInputStream(connectSocket.getInputStream());
-			//DataOutputStream sender=new DataOutputStream(connectSocket.getOutputStream());
-			//clientSentence = receiver.readUTF();
-			//capitalizedSentence =clientSentence.toUpperCase()+"\r\n";
-			//sender.writeUTF(capitalizedSentence);
 		}
 	}
 }
