@@ -18,15 +18,15 @@ public class ServerThread implements Runnable {
 	public void run() {
 		try {
 			String clientSentence, sendSentence;
-			DataInputStream receiver =new DataInputStream(client.getInputStream());
+			DataInputStream receiver =new DataInputStream(client.getInputStream()); //USE BYTE STREAM
 			DataOutputStream sender=new DataOutputStream(client.getOutputStream());
 			while (true) {
 				clientSentence = receiver.readUTF();
 				System.out.println("CLIENT: "+clientSentence);
-				BufferedReader serverInput =new BufferedReader(new InputStreamReader(System.in));
+				//BufferedReader serverInput =new BufferedReader(new InputStreamReader(System.in));
 				//String s=serverInput.readLine();
 				//sendSentence=s;
-				Vector<ServerThread> connectedClients=TCPServer.getConnectedClients();
+				Vector<ServerThread> connectedClients=Server.getConnectedClients();
 				Iterator it=connectedClients.iterator();
 				while (it.hasNext()) {
 					ServerThread vectorSerThread=(ServerThread)it.next();
